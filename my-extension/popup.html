@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html style="width: 300px;">
+  <head>
+    <style>
+        .test {
+            text-decoration-line : underline;
+            display:inline-block;
+            margin-right:10px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    <div>
+        <div>
+            <p class="test">Bob: 03/01/2023</p>
+            <p style="display:inline-block;margin-right:10px;" id="counter">4</p>
+            <button id="my-button" style="display:inline-block"><i class="fa fa-water"></i></button>
+        </div>
+        <p>I love this Kayak, I went on vacation with my wife.</p>
+    </div>
+    <div>
+        <p class="test">Jean: 04/01/2023</p>
+        <p style="display:inline-block;margin-right:10px;">1</p>
+        <button style="display:inline-block"><i class="fa fa-fire"></i></button>
+        <p>I love this Kayak too</p>
+    </div>
+    <div>
+        <p class="test">Marie: 05/01/2023</p>
+        <p style="display:inline-block;margin-right:10px;">0</p>
+        <button style="display:inline-block"><i class="fa fa-fire"></i></button>
+        <p>I hate this Kayak</p>
+    </div>
+    <form action="/action_page.php">
+        <input type="text" id="lname" name="lname" placeholder="Your comment"><br><br>
+        <input type="submit">
+    </form>
+    <script>
+        // Get a reference to the button and the counter
+        const button = document.getElementById('my-button');
+        const counter = document.getElementById('counter');
+
+        // Set an initial value for the counter
+        let count = 0;
+
+        // Listen for clicks on the button
+        button.addEventListener('click', function() {
+          // Increase the count by 1
+          count += 1;
+          // Update the counter's value
+          counter.textContent = count;
+        });
+      </script>
+  </body>
+</html>
