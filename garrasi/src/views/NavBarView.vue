@@ -33,6 +33,7 @@
 
 <script>
     let getPath = () => {
+      // debugger
                 let tmp = window.location.href.split('?')[1];
 
                 if (tmp === "" || tmp == undefined)
@@ -47,9 +48,11 @@ export default {
     },
     methods: {
         getExtentionBaseUrl() {
+          // debugger
             console.log(window.location.href.split('?')[0]);
             return window.location.href.split('?')[0];
         }
-    }
+    },
+    computed: {}
 }
 </script>

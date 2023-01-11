@@ -1,8 +1,7 @@
 import { createApp } from "vue";
-import App from "./App.vue";
-
+import Home from "./Home.vue";
 import "bootstrap/dist/css/bootstrap.css";
 
-createApp(App).mount("#app");
+createApp(Home).mount("#app");
 
 import "bootstrap/dist/js/bootstrap.js";
