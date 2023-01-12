@@ -25,8 +25,11 @@
 </template>
 <script>
   import Navbar from "./views/NavBarView.vue";
+  // import { Server } from 'socket.io'
+  import io from "socket.io-client";
 
-  export default{
+
+export default{
     components: {
       Navbar,
     },
@@ -38,29 +41,7 @@
         newComment: '',
         channelName: "",
         count: 0,
-        users: [
-          {
-            name: "FuzzBear27",
-            date: new Date(2022, 1, 20),
-            comment: "If step 1 is not clear to you, go see LoremIpsum's channel on youtube. He explains it very well.",
-            fire: -6,
-            color: "orange"
-          },
-          {
-            name: "Kleinefrustuck",
-            date: new Date(2022, 1, 15),
-            comment: "Instead of doing this manually, you can use \"dolorsiamet\" its a vscode plugin that sets everything up from a GUI interface. It is very well explained and you are sure not to be missing any steps.",
-            fire: 10,
-            color: "lime"
-          },
-          {
-            name: "WishLorraine",
-            date: new Date(2022, 1, 14),
-            comment: "u better write ur secrets in a .txt file, it works and is pretty easy! No need for all o zis **** if ur a begginer lol",
-            fire: 5,
-            color: "cyan"
-          }
-        ],
+        users: [],
         colors: [
           "orange",
           "lime",
@@ -68,7 +49,8 @@
           "cyan",
           "fuchsia",
           "pink"
-        ]
+        ],
+        socket: null,
       }
     },
     methods: {
@@ -76,6 +58,7 @@
         let idColor = Math.floor(Math.random() * this.colors.length);
         return this.colors[idColor];
       },
+
       sendComment() {
         if (this.newComment.length > 0) {
 
@@ -90,16 +73,28 @@
           this.newComment = '';
         }
       },
+
       pressEnter() {
         document.getElementById("sendComment").click();
       },
+
       sortUsers() {
         this.users.sort((a, b) => b.fire - a.fire)
       }
     },
-    created () {
+    async created () {
+      this.socket = await io().connect("http://localhost:8080");
+      // DEFINE EVENT HANDLERS
+      this.socket.on("chatContentUpdate", (res) => {console.log("connection success"); this.users = res;});
+
+      console.log(this.socket);
+      // INITIALIZATION
+      this.socket.emit("loadChannel", {
+        url: window.location.href.split('?')[0],
+        channel: "discuChat"
+      });
       this.sortUsers();
-    }
+    },
   }
 </script>
 <style lang="scss">
