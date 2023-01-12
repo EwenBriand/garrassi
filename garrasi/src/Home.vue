@@ -37,8 +37,13 @@ import App from "./App.vue";
       }
     },
     created() {
+<<<<<<< HEAD
         // if (this.name !== null)
         //     this.isHome = false;
+=======
+        if (this.name !== null)
+            this.isHome = false;
+>>>>>>> a06ed930 ([ADD] backend & [MOD] frontend)
     }
   }
 </script>
