@@ -43,7 +43,7 @@ import App from "./App.vue";
     },
     created() {
         if (this.name !== null)
-            this.isHome = false;
+        this.isHome = false;
     }
   }
 </script>
