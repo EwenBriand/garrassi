@@ -32,8 +32,13 @@
 import { getDatabase, set, onValue, get, child, ref} from "firebase/database";
 import {db} from "./main.js"
 import { ref as storageRef } from 'firebase/storage';
+import getUuid from "uuid-by-string"
   function chatUpdate(snapshot) {
     console.log("snapshot.val: " + snapshot.val());
+  }
+
+  function getUniqueId(url) {
+    return getUuid(url, 3);
   }
 
 export default{
@@ -220,7 +225,7 @@ export default{
       // console.log("chat chat chat: " + loadChannel("qna", chatUpdate));
       //loadChannelOnce("qna", "bonjour");
       //deleteme();
-
+    console.log("unique id for hello: " + getUniqueId("hello"));
     console.log("db is : " + db);
     const stoRef = ref(db, "website/bonjour/channel/qna")
     onValue(stoRef, (snapshot) => {

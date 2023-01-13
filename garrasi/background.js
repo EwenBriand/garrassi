@@ -32,7 +32,7 @@ function test(channel, uniqueID) {
     let result = null;
     console.log("loadChannelOnce" + get(child(dbRef, "website/" + uniqueID + "/channel/" + channel + "/")));
     console.log("db path is " + "website/" + uniqueID + "/channel/" + channel + "/");
-    
+
     get(child(dbRef, "website/" + uniqueID + "/channel/" + channel + "/")).then((snapshot) => {
         console.log(snapshot.val())
     });

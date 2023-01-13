@@ -19,7 +19,6 @@ const firebaseConfig = {
     databaseURL: "https://garrasiteel-default-rtdb.europe-west1.firebasedatabase.app"
 };
 const app = initializeApp(firebaseConfig);
-// "https://garrasiteel-default-rtdb.europe-west1.firebasedatabase.app"
 const db = getDatabase();
 
 createApp(Home).mount("#app");
