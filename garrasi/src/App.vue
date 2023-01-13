@@ -28,9 +28,13 @@ app<template>
 </template>
 <script>
   import Navbar from "./views/NavBarView.vue";
-  // import { Server } from 'socket.io'
-  import io from "socket.io-client";
-
+  //import { loadChannel, loadChannelOnce, getChannel, deleteme } from "../background.js"
+import { getDatabase, set, onValue, get, child} from "firebase/database";
+import {db} from "./main.js"
+import { ref as storageRef } from 'firebase/storage';
+  function chatUpdate(snapshot) {
+    console.log("snapshot.val: " + snapshot.val());
+  }
 
 export default{
     components: {
@@ -86,34 +90,19 @@ export default{
       }
     },
     async created () {
-    //   this.socket = await io().connect("http://localhost:3000");
-      this.socket = await io("http://localhost:3000");
-      // DEFINE EVENT HANDLERS
-      this.socket.on("chatContentUpdate", (res) => {console.log("connection success"); this.users = res;});
-
-      console.log(this.socket);
-      // INITIALIZATION
-      this.socket.emit("loadChannel", {
-        url: window.location.href.split('?')[0],
-        channel: "discuChat"
-      });
+      // console.log("chat chat chat: " + loadChannel("qna", chatUpdate));
+      //loadChannelOnce("qna", "bonjour");
+      //deleteme();
+      const startCountRef = storageRef(db, "website")
+      onValue(starCountRef, (snapshot) => {
+        const data = snapshot.val();
+        console.log(data)
+    }, (error) => {
+        console.log("there has been an error: ", error);
+    });
       console.log("created");
       this.sortUsers();
     },
-    // async created () {
-    //   this.socket = await io().connect("http://localhost:3000")
-    //   // DEFINE EVENT HANDLERS
-    //   this.socket.on("chatContentUpdate", (res) => {console.log("connection success"); this.users = res;});
-
-    //   console.log(this.socket);
-    //   // INITIALIZATION
-    //   this.socket.emit("loadChannel", {
-    //     url: window.location.href.split('?')[0],
-    //     channel: "discuChat"
-    //   });
-    //   console.log("created");
-    //   this.sortUsers();
-    // },
   }
 </script>
 <style lang="scss">
