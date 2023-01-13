@@ -2,7 +2,7 @@
   <nav class="navbar navbar-dark bg-dark fixed-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">{{ path }}</a>
-        <input v-if="isOpen" class="search-box-nav" v-model="research" style="margin-left: 20px;" v-on:keyup.enter="researchComment()" type="text" placeholder="Start typing...">
+        <input v-if="isOpen" class="search-box-nav" v-model="research" style="margin-left: 20px;" type="text" placeholder="Start typing...">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" color="white" @click="isOpen = !isOpen" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
           <span class="navbar-toggler-icon"></span>
@@ -22,9 +22,12 @@
               <li class="nav-item">
                   <a :class="changeClass('DiscuChat')" :href="getExtentionBaseUrl() + '?DiscuChat'">DiscuChat</a>
               </li>
-               <li class="nav-item">
-                  <a :class="changeClass('Feedback')" :href="getExtentionBaseUrl() + '?Feedback'">Feedback</a>
-               </li>
+              <li class="nav-item">
+                <a :class="changeClass('Feedback')" :href="getExtentionBaseUrl() + '?Feedback'">Feedback</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" @click="quit()">Quit</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -50,8 +53,8 @@ export default {
       }
   },
   methods: {
-    researchComment() {
-      console.log(this.research, this.users)
+    quit() {
+      this.$emit('quit', true);
     },
     changeClass(channel) {
       if (getPath() === channel)
@@ -73,11 +76,10 @@ export default {
 <style>
 .search-box-nav::-webkit-input-placeholder {
   font-family: 'Open Sans';
-  font-weight: 900;
 }
 .search-box-nav {
   border-radius: 10px;
   height: 25px;
-  width: 150px;
+  width: 100px;
 }
 </style>

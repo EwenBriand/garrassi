@@ -9,7 +9,7 @@
             </div>
         </div>
     <div v-else>
-        <app :nameUser="name"></app>
+        <app :nameUser="name" @quit="quit()"></app>
     </div>
 </template>
 <script>
@@ -28,6 +28,9 @@ import App from "./App.vue";
         }
     },
     methods: {
+      quit() {
+        this.isHome = true;
+      },
         changeMargin() {
             return "margin-top: 190px"
         },

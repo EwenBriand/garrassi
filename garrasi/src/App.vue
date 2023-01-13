@@ -1,5 +1,5 @@
 <template>
-  <navbar @research="getResearch"></navbar>
+  <navbar @research="getResearch" @quit="quit()"></navbar>
   <div style="margin-top: 60px; margin-bottom: 70px;">
     <p v-if="users.length == 0" style="margin-left: 135px;" >No Message</p>
     <div v-for="(user,index) in users" style="margin-top: 20px; margin-bottom: 20px;" :key="user">
@@ -28,9 +28,6 @@
 </template>
 <script>
   import Navbar from "./views/NavBarView.vue";
-  // import { Server } from 'socket.io'
-  import io from "socket.io-client";
-
 
 export default{
     components: {
@@ -107,6 +104,9 @@ export default{
       }
     },
     methods: {
+      quit() {
+        this.$emit("quit", true)
+      },
       getResearch(value) {
         this.users = this.usersStock.filter(user => (user.comment.toLowerCase()).includes(value.toLowerCase()))
       },
