@@ -10,14 +10,14 @@
     "bonjour": {
       "channel": {
         "qna": [{
-          "AM": true,
-          "answers": {},
-          "date": "12/12/2012",
-          "fire": [],
-          "freeze": [],
-          "hour": "12:12",
-          "message": "Hello World!",
-          "userID": "aUniqueUserID"
+            "id": 0,
+            "name": "fuzzbear77",
+            "date": "12/11/2022",
+            "comment": "This channel is empty...",
+            "fire": 4,
+            "color": "orange",
+            "url": "",
+            "channel": "Q&A"
         }]
       },
       "url": "https://en.wikipedia.org/wiki/Avatar:_The_Way_of_Water"

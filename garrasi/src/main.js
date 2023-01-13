@@ -9,15 +9,15 @@ import { getDatabase } from "firebase/database";
 import "bootstrap/dist/js/bootstrap.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAiMv-BKmPkq8IppyYa76bcqRA0lauIwzY",
-    authDomain: "garrasiteel.firebaseapp.com",
-    projectId: "garrasiteel",
-    storageBucket: "garrasiteel.appspot.com",
-    messagingSenderId: "165070487710",
-    appId: "1:165070487710:web:06c20aaea7999447b3bb8f",
-    measurementId: "G-G6D1MJY0YM",
-    databaseURL: "https://garrasiteel-default-rtdb.europe-west1.firebasedatabase.app"
+    apiKey: "AIzaSyCxR_yFb9m8kA293LyGpo41tha-FjHOtYc",
+    authDomain: "garrasiteelv2.firebaseapp.com",
+    projectId: "garrasiteelv2",
+    storageBucket: "garrasiteelv2.appspot.com",
+    messagingSenderId: "401608178272",
+    appId: "1:401608178272:web:2cc3989f9bb13054b6e105",
+    measurementId: "G-H329C3FTY0"
 };
+
 const app = initializeApp(firebaseConfig);
 const db = getDatabase();
 
