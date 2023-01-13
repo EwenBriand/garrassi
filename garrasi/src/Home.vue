@@ -1,14 +1,13 @@
 <template>
     <div v-if="isHome" class="vertically_centered">
-    <div class="fancy_title">
-        <h1 class="main_title"> Hello there! </h1>
-        <h1 class="legend">Start with a name!</h1>
-    </div>
-        <div class="name_input">
-            <input type="text" v-model="name" maxlength="20">
-            <button type="submit" @click="sendComment()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg></button>
+        <div :style="changeMargin()" class="fancy_title">
+            <h1 class="main_title"> Hello there! </h1>
+            <h1 class="legend">Start with a name!</h1>
         </div>
-     </div>
+            <div class="name_input">
+                <input class="search-box-home" placeholder="Press enter to come in a new world" type="text" v-model="name" v-on:keyup.enter="pressEnter" maxlength="20">
+            </div>
+        </div>
     <div v-else>
         <app :nameUser="name"></app>
     </div>
@@ -29,22 +28,34 @@ import App from "./App.vue";
         }
     },
     methods: {
-        sendComment() {
+        changeMargin() {
+            return "margin-top: 190px"
+        },
+        pressEnter() {
             if (this.name.length < 2)
                 return
             VueCookies.set('name', this.name);
             this.isHome = false;
-      }
+        },
     },
     created() {
-        // if (this.name !== null)
-        //     this.isHome = false;
+        if (this.name !== null)
+            this.isHome = false;
     }
   }
 </script>
-
 <style>
-
+.search-box-home::-webkit-input-placeholder {
+  font-family: 'Open Sans';
+  font-weight: 900;
+}
+.search-box-home {
+  margin-bottom: 15px;
+  border-radius: 15px;
+  height: 45px;
+  width: 300px;
+  text-align: center;
+}
 .legend{
     margin: auto;
     width: 50%;
@@ -94,10 +105,10 @@ import App from "./App.vue";
     text-align: center;
     padding-top: 50px;
     margin: auto;
+    margin-bottom: 190px;
 }
 
 .vertically_centered {
     margin: auto;
 }
-
 </style>

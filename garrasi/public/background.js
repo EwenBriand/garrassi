@@ -13,10 +13,9 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 });
 
 chrome.browserAction.setBadgeText({
-    text: "3"
+    text: users.length.toString()
 });
 
-console.log("Setting badge text");
 
 chrome.browserAction.setBadgeBackgroundColor({
     color: "blue"
