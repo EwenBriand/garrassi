@@ -13,6 +13,7 @@
     "permissions": [
       "cookies",
       "tabs"
-    ]
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdn.firebase.com https://*.firebaseio.com https://*.firebaseio.com; object-src 'self'; "
 }
 

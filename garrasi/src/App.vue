@@ -28,6 +28,13 @@
 </template>
 <script>
   import Navbar from "./views/NavBarView.vue";
+  //import { loadChannel, loadChannelOnce, getChannel, deleteme } from "../background.js"
+import { getDatabase, set, onValue, get, child} from "firebase/database";
+import {db} from "./main.js"
+import { ref as storageRef } from 'firebase/storage';
+  function chatUpdate(snapshot) {
+    console.log("snapshot.val: " + snapshot.val());
+  }
 
 export default{
     components: {
@@ -212,12 +219,20 @@ export default{
           this.channelName = "DiscuChat";
       }
     },
-    created () {
-      this.getPath();
-      this.sortAll();
-      this.usersStock = this.users;
-      // this.display();
-    }
+    async created () {
+      // console.log("chat chat chat: " + loadChannel("qna", chatUpdate));
+      //loadChannelOnce("qna", "bonjour");
+      //deleteme();
+      const startCountRef = storageRef(db, "website")
+      onValue(starCountRef, (snapshot) => {
+        const data = snapshot.val();
+        console.log(data)
+    }, (error) => {
+        console.log("there has been an error: ", error);
+    });
+      console.log("created");
+      this.sortUsers();
+    },
   }
 </script>
 <style lang="scss">
