@@ -1,5 +1,5 @@
 <template>
-  <navbar></navbar>
+  <navbar @research="getResearch"></navbar>
   <div style="margin-top: 60px; margin-bottom: 70px;">
     <p v-if="users.length == 0" style="margin-left: 135px;" >No Message</p>
     <div v-for="(user,index) in users" style="margin-top: 20px; margin-bottom: 20px;" :key="user">
@@ -73,9 +73,10 @@ export default{
             fire: 5,
             color: "cyan",
             url: "",
-            channel: "Tips",
+            channel: "DiscuChat",
           }
         ],
+        usersStock: [{}],
         like: [
           {
             id: 0,
@@ -106,6 +107,9 @@ export default{
       }
     },
     methods: {
+      getResearch(value) {
+        this.users = this.usersStock.filter(user => (user.comment.toLowerCase()).includes(value.toLowerCase()))
+      },
       setColorToFire(index) {
         if (this.like[index].fire)
           return "red"
@@ -144,17 +148,18 @@ export default{
           });
           this.sortAll();
           this.newComment = '';
+          this.usersStock = this.users;
         }
       },
       sortAll() {
         this.sortUsers();
         this.sortLike();
-        chrome.browserAction.setBadgeText({
-          text: this.users.length.toString()
-        });
+        // chrome.browserAction.setBadgeText({
+        //   text: this.users.length.toString()
+        // });
       },
       sortLike() {
-        this.like.sort((a, b) => {
+        this.like = this.like.sort((a, b) => {
           const aIndex = this.users.findIndex(item => item.id === a.id)
           const bIndex = this.users.findIndex(item => item.id === b.id)
           return aIndex - bIndex
@@ -162,6 +167,7 @@ export default{
       },
 
       sortUsers() {
+        console.log(this.users, this.channelName)
         this.users.sort((a, b) => b.fire - a.fire)
         this.users = this.users.filter(user => user.channel === this.channelName)
       },
@@ -199,13 +205,18 @@ export default{
         });
         if (this.url === '')
           this.display()
+      },
+      getPath() {
+        this.channelName = window.location.href.split('?')[1];
+        if (this.channelName === "" || this.channelName == undefined)
+          this.channelName = "DiscuChat";
       }
     },
     created () {
-      this.channelName = window.location.href.split('?')[1];
+      this.getPath();
       this.sortAll();
+      this.usersStock = this.users;
       // this.display();
-      console.log(this.channelName)
     }
   }
 </script>
