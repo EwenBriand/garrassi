@@ -1,4 +1,4 @@
-<template>
+app<template>
   <navbar></navbar>
   <div v-for="user in users" style="margin-top: 80px; margin-bottom: 80px;">
     <div class="container user row">
@@ -21,6 +21,9 @@
       <button id="sendComment" type="submit" @click="sendComment()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg></button>
       <button type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg></button>
       <input class="search-box" type="text" v-model="newComment"  v-on:keyup.enter="pressEnter" placeholder="Your comment"><br><br>
+  <div style="color: white">
+</div>
+
   </div>
 </template>
 <script>
@@ -83,7 +86,8 @@ export default{
       }
     },
     async created () {
-      this.socket = await io().connect("http://localhost:8080");
+    //   this.socket = await io().connect("http://localhost:3000");
+      this.socket = await io("http://localhost:3000");
       // DEFINE EVENT HANDLERS
       this.socket.on("chatContentUpdate", (res) => {console.log("connection success"); this.users = res;});
 
@@ -93,8 +97,23 @@ export default{
         url: window.location.href.split('?')[0],
         channel: "discuChat"
       });
+      console.log("created");
       this.sortUsers();
     },
+    // async created () {
+    //   this.socket = await io().connect("http://localhost:3000")
+    //   // DEFINE EVENT HANDLERS
+    //   this.socket.on("chatContentUpdate", (res) => {console.log("connection success"); this.users = res;});
+
+    //   console.log(this.socket);
+    //   // INITIALIZATION
+    //   this.socket.emit("loadChannel", {
+    //     url: window.location.href.split('?')[0],
+    //     channel: "discuChat"
+    //   });
+    //   console.log("created");
+    //   this.sortUsers();
+    // },
   }
 </script>
 <style lang="scss">

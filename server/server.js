@@ -8,18 +8,18 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 
 const httpServer = createServer();
-const io = new Server(httpServer, {});
+        const io = new Server(httpServer, {cors: {headers: {"Access-Control-Allow-Origin": "*"}, origin: '*', methods: ["GET", "POST"], }});
 
 ///////////////////////////////////////////////////////////////////////////////
 //                       DB RELATED REQUESTS HANDLING                        //
 ///////////////////////////////////////////////////////////////////////////////
 
-// /* 
+// /*
 // * add the msg in the db:
 // * creates the channel for the website if needed
 // * broadcasts all the msgs sorted by upvotes, except in the discuchat where it
 // * is sorted by date (most ancient messages lower)
-// * call it with: 
+// * call it with:
 // * socket.emit("addMsg", {url: "http://oui.fr", channel: "tips", username: "barnabe", content: "trop bien lol"});
 // */
 // io.on("addMsg", async (data) => {
@@ -29,12 +29,13 @@ const io = new Server(httpServer, {});
 //             socket.broadcast.emit("addMsgResult", await DB.addMsg(data));
 //         }
 //     } catch (error) {
-        
+
 //     }
 // });
 
 io.on("loadChannel", async (data) => {
     // io.emit("chatContent", await DB.loadChannel(data));
+    console.log("got pinged")
     io.emit("chatContentUpdate", [{
         name: "oui",
         date: Date.now(),
@@ -45,4 +46,4 @@ io.on("loadChannel", async (data) => {
 });
 
 
-httpServer.listen(8080);
+httpServer.listen(3000);
