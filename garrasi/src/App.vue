@@ -1,8 +1,8 @@
 <template>
   <navbar @research="getResearch" @quit="quit()"></navbar>
   <div style="margin-top: 60px; margin-bottom: 70px;">
-    <p v-if="users.length == 0" style="margin-left: 135px;" >No Message</p>
-    <div v-for="(user,index) in users" style="margin-top: 20px; margin-bottom: 20px;" :key="user">
+    <!-- <p v-if="allComments[channelName].length == 0" style="margin-left: 135px;" >No Message</p> -->
+    <div v-for="(user,index) in allComments[channelName]" style="margin-top: 20px; margin-bottom: 20px;" :key="user">
       <div class="container user row">
         <div class="col-1" style="margin: auto; margin-right: 20px; margin-left: -10px;">
           <svg xmlns="http://www.w3.org/2000/svg" style="display:inline-block;" :color="setColorToFire(index)" @click="addFire(index, user.id)" width="25" height="25" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16"><path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16Zm0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15Z"/></svg>
@@ -30,7 +30,7 @@
   import Navbar from "./views/NavBarView.vue";
   //import { loadChannel, loadChannelOnce, getChannel, deleteme } from "../background.js"
 import { getDatabase, set, onValue, get, child, ref} from "firebase/database";
-import {db} from "./main.js"
+import { db } from "./main.js"
 import { ref as storageRef } from 'firebase/storage';
 import getUuid from "uuid-by-string"
   function chatUpdate(snapshot) {
@@ -85,6 +85,7 @@ export default{
         //     channel: "DiscuChat",
         //   }
         ],
+        allComments: {"Q&A": [], "Tips": [], "DiscuChat": [], "Feedback": []},
         usersStock: [{}],
         like: [
           {
@@ -179,7 +180,8 @@ export default{
       },
 
       sortUsers() {
-        console.log(this.users, this.channelName)
+        console.log("pipi")
+        console.log("coucou", this.users)
         this.users.sort((a, b) => b.fire - a.fire)
         this.users = this.users.filter(user => user.channel === this.channelName)
       },
@@ -222,30 +224,38 @@ export default{
         this.channelName = window.location.href.split('?')[1];
         if (this.channelName === "" || this.channelName == undefined)
           this.channelName = "DiscuChat";
+      },
+      putDataInComments(data) {
+        try {
+          console.log(data)
+          for(let i = 0; i < data.length; i++) {
+            console.log(data[i])
+            this.allComments[data[i].channel].push(data[i]);
+          }
+          console.log(this.allComments)
+        } catch (e) {
+          console.log(e)
+        }
       }
     },
     async created () {
       // console.log("chat chat chat: " + loadChannel("qna", chatUpdate));
       //loadChannelOnce("qna", "bonjour");
       //deleteme();
-    console.log("unique id for hello: " + getUniqueId("hello"));
-    console.log("db is : " + db);
-    const stoRef = ref(db, "website/bonjour/channel/qna")
-    onValue(stoRef, (snapshot) => {
-        // const data = snapshot.val();
-        debugger
-        this.users = snapshot.val();
-        console.log(this.users)
-    }, (error) => {
-        console.log("there has been an error: ", error);
-    });
-    console.log("created");
-    this.sortUsers();
-
-
-
-
-
+      this.getPath()
+      console.log("unique id for hello: " + getUniqueId("hello"));
+      console.log("db is : " + db);
+      const stoRef = ref(db, "website/bonjour/channel/qna")
+      await onValue(stoRef, (snapshot) => {
+          // const data = snapshot.val();
+          debugger
+          let data = snapshot.val();
+          this.putDataInComments(data)
+          console.log(this.users)
+      }, (error) => {
+          console.log("there has been an error: ", error);
+      });
+      console.log("created")
     },
   }
 </script>

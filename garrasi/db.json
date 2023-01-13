@@ -8,8 +8,7 @@
   },
   "website": {
     "bonjour": {
-      "channel": {
-        "qna": [{
+      "0": {
             "id": 0,
             "name": "fuzzbear77",
             "date": "12/11/2022",
@@ -18,9 +17,7 @@
             "color": "orange",
             "url": "",
             "channel": "Q&A"
-        }]
-      },
-      "url": "https://en.wikipedia.org/wiki/Avatar:_The_Way_of_Water"
+      }
     }
   }
 }
