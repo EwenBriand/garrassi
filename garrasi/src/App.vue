@@ -229,7 +229,6 @@ export default{
     console.log("db is : " + db);
     const stoRef = ref(db, "website/bonjour/channel/qna")
     onValue(stoRef, (snapshot) => {
-      debugger
         const data = snapshot.val();
         console.log("logging data: " + data[0]["message"])
     }, (error) => {
