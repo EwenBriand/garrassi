@@ -19,6 +19,8 @@ import VueCookies from 'vue-cookies'
 import App from "./App.vue";
 import { getDatabase, set, onValue, get, child, ref} from "firebase/database";
 import { db } from "./main.js"
+import { getUrlId, addUser, addMessage, addFire, addFreeze } from '../background.js';
+
 
   export default{
     components: {
@@ -30,6 +32,14 @@ import { db } from "./main.js"
             isHome: true,
             users: [],
             isNotUnique: false,
+            colors: [
+              "orange",
+              "lime",
+              "lawnGreen",
+              "cyan",
+              "fuchsia",
+              "pink"
+            ],
         }
     },
     methods: {
@@ -46,20 +56,20 @@ import { db } from "./main.js"
             this.isHome = false;
         },
         checkData() {
-          console.log(this.users);
-          for (let i = 0; i < this.users.length; i++) {
-            if (this.users[i].name === this.name) {
+          for (let user of this.users) {
+            if (user.name === this.name) {
               this.isNotUnique = true;
               return true;
             }
           }
+          addUser(this.name, this.colors[Math.floor(Math.random() * this.colors.length)])
           return false;
         }
       },
     async created() {
-      const stoRef = ref(db, "user/aUniqueUserID")
+      const stoRef = ref(db, "user")
       await onValue(stoRef, (snapshot) => {
-        this.users = snapshot.val();
+        this.users = Object.values(snapshot.val());
       }, (error) => {
         console.log("there has been an error: ", error);
       });

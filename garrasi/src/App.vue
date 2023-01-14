@@ -5,16 +5,16 @@
     <div v-for="(user,index) in allComments[channelName]" style="margin-top: 20px; margin-bottom: 20px;" :key="user">
       <div class="container user row">
         <div class="col-1" style="margin: auto; margin-right: 20px; margin-left: -10px;">
-          <svg xmlns="http://www.w3.org/2000/svg" style="display:inline-block;" :color="setColorToFire(index)" @click="addFire(index, user.id)" width="25" height="25" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16"><path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16Zm0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15Z"/></svg>
-          <p style="display:inline-block;margin-right:10px;margin-left: 4px;"> {{ user.fire }}</p>
-          <svg xmlns="http://www.w3.org/2000/svg" style="display:inline-block" :color="setColorToSnow(index)" @click="addSnow(index, user.id)" width="25" height="25" fill="currentColor" class="bi bi-snow" viewBox="0 0 16 16"><path d="M8 16a.5.5 0 0 1-.5-.5v-1.293l-.646.647a.5.5 0 0 1-.707-.708L7.5 12.793V8.866l-3.4 1.963-.496 1.85a.5.5 0 1 1-.966-.26l.237-.882-1.12.646a.5.5 0 0 1-.5-.866l1.12-.646-.884-.237a.5.5 0 1 1 .26-.966l1.848.495L7 8 3.6 6.037l-1.85.495a.5.5 0 0 1-.258-.966l.883-.237-1.12-.646a.5.5 0 1 1 .5-.866l1.12.646-.237-.883a.5.5 0 1 1 .966-.258l.495 1.849L7.5 7.134V3.207L6.147 1.854a.5.5 0 1 1 .707-.708l.646.647V.5a.5.5 0 1 1 1 0v1.293l.647-.647a.5.5 0 1 1 .707.708L8.5 3.207v3.927l3.4-1.963.496-1.85a.5.5 0 1 1 .966.26l-.236.882 1.12-.646a.5.5 0 0 1 .5.866l-1.12.646.883.237a.5.5 0 1 1-.26.966l-1.848-.495L9 8l3.4 1.963 1.849-.495a.5.5 0 0 1 .259.966l-.883.237 1.12.646a.5.5 0 0 1-.5.866l-1.12-.646.236.883a.5.5 0 1 1-.966.258l-.495-1.849-3.4-1.963v3.927l1.353 1.353a.5.5 0 0 1-.707.708l-.647-.647V15.5a.5.5 0 0 1-.5.5z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" style="display:inline-block;" :color="setColorToFire(index)" @click="Fire(index, nameUser)" width="25" height="25" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16"><path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16Zm0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15Z"/></svg>
+          <p style="display:inline-block;margin-right:10px;margin-left: 4px;"> {{ (user.fire.length - 1) - (user.freeze.length - 1) }}</p>
+          <svg xmlns="http://www.w3.org/2000/svg" style="display:inline-block" :color="setColorToSnow(index)" @click="Snow(index, nameUser)" width="25" height="25" fill="currentColor" class="bi bi-snow" viewBox="0 0 16 16"><path d="M8 16a.5.5 0 0 1-.5-.5v-1.293l-.646.647a.5.5 0 0 1-.707-.708L7.5 12.793V8.866l-3.4 1.963-.496 1.85a.5.5 0 1 1-.966-.26l.237-.882-1.12.646a.5.5 0 0 1-.5-.866l1.12-.646-.884-.237a.5.5 0 1 1 .26-.966l1.848.495L7 8 3.6 6.037l-1.85.495a.5.5 0 0 1-.258-.966l.883-.237-1.12-.646a.5.5 0 1 1 .5-.866l1.12.646-.237-.883a.5.5 0 1 1 .966-.258l.495 1.849L7.5 7.134V3.207L6.147 1.854a.5.5 0 1 1 .707-.708l.646.647V.5a.5.5 0 1 1 1 0v1.293l.647-.647a.5.5 0 1 1 .707.708L8.5 3.207v3.927l3.4-1.963.496-1.85a.5.5 0 1 1 .966.26l-.236.882 1.12-.646a.5.5 0 0 1 .5.866l-1.12.646.883.237a.5.5 0 1 1-.26.966l-1.848-.495L9 8l3.4 1.963 1.849-.495a.5.5 0 0 1 .259.966l-.883.237 1.12.646a.5.5 0 0 1-.5.866l-1.12-.646.236.883a.5.5 0 1 1-.966.258l-.495-1.849-3.4-1.963v3.927l1.353 1.353a.5.5 0 0 1-.707.708l-.647-.647V15.5a.5.5 0 0 1-.5.5z"/></svg>
         </div>
         <div class="col">
           <div>
-            <p class="test" :style="'color: ' + user.color">{{ user.name }} | {{ user.date }}</p>
-            <svg v-if="user.fire < -15" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle danger" viewBox="0 0 16 16"><path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/><path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/></svg>
+            <p class="test" :style="chargeColor(user.username)">{{ user.username }} | {{ user.date }}</p>
+            <svg v-if="((user.fire.length - 1) - (user.freeze.length - 1)) < -5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle danger" viewBox="0 0 16 16"><path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/><path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/></svg>
           </div>
-          <p style="maxlength: 200px">{{ user.comment }}</p>
+          <p style="maxlength: 200px">{{ user.message }}</p>
         </div>
       </div>
     </div>
@@ -30,13 +30,8 @@
   //import { loadChannel, loadChannelOnce, getChannel, deleteme } from "../background.js"
 import { getDatabase, set, onValue, get, child, ref} from "firebase/database";
 import { db } from "./main.js";
-import { ref as storageRef } from 'firebase/storage';
 import getUuid from "uuid-by-string";
-import { getUrlId, addUser } from '../background.js';
-
-  function chatUpdate(snapshot) {
-    console.log("snapshot.val: " + snapshot.val());
-  }
+import { getUrlId, addUser, addMessage, addFire, addFreeze } from '../background.js';
 
   function getUniqueId(url) {
     return getUuid(url, 3);
@@ -114,10 +109,18 @@ export default{
           "pink"
         ],
         socket: null,
-        url : ''
+        url : '',
+        allUsers: [],
       }
     },
     methods: {
+      chargeColor(username) {
+        for(let user of this.allUsers) {
+          if(user.name === username) {
+            return "color: " + user.color;
+          }
+        }
+      },
       quit() {
         this.$emit("quit", true)
       },
@@ -125,14 +128,14 @@ export default{
         this.users = this.usersStock.filter(user => (user.comment.toLowerCase()).includes(value.toLowerCase()))
       },
       setColorToFire(index) {
-        if (this.like[index].fire)
-          return "red"
-        return "white"
+        // if (this.like[index].fire)
+        //   return "red"
+        // return "white"
       },
       setColorToSnow(index) {
-        if (this.like[index].ice)
-          return "blue"
-        return "white"
+        // if (this.like[index].ice)
+        //   return "blue"
+        // return "white"
       },
       changeColor(name) {
         let user = this.users.find(user => user.name == name);
@@ -145,52 +148,44 @@ export default{
 
       sendComment() {
         if (this.newComment.length > 0) {
-          var id = this.users.length;
-          this.users.push({
-            id: id,
-            name: this.nameUser,
-            date: new Date(),
-            comment: this.newComment,
-            fire: 0,
-            color: this.changeColor(this.nameUser),
-            channel: this.channelName
-          });
-          this.like.push({
-            id: id,
-            fire: false,
-            ice: false,
-          });
-          this.sortAll();
+          // var id = this.users.length;
+          // this.users.push({
+          //   name: this.nameUser,
+          //   date: new Date(),
+          //   comment: this.newComment,
+          //   fire: 0,
+          //   color: this.changeColor(this.nameUser),
+          //   channel: this.channelName
+          // });
+          // this.sortAll();
+          // this.usersStock = this.users;
+          let info = {
+            channel : this.channelName,
+            name : this.nameUser,
+            message: this.newComment,
+          }
+          addMessage(getUrlId(), info)
           this.newComment = '';
-          this.usersStock = this.users;
         }
       },
       sortAll() {
         this.sortUsers();
-        this.sortLike();
-        // chrome.browserAction.setBadgeText({
-        //   text: this.users.length.toString()
-        // });
-      },
-      sortLike() {
-        this.like = this.like.sort((a, b) => {
-          const aIndex = this.users.findIndex(item => item.id === a.id)
-          const bIndex = this.users.findIndex(item => item.id === b.id)
-          return aIndex - bIndex
-        })
       },
       sortUsers() {
         this.users.sort((a, b) => b.fire - a.fire)
         this.users = this.users.filter(user => user.channel === this.channelName)
       },
-      addFire(index, id) {
+      Fire(index, username) {
+        console.log(username)
         let message = this.allComments[this.channelName][index];
+        addFire(message, username)
       },
-      addSnow(index, id) {
+      Snow(index, username) {
+        console.log(username)
         let message = this.allComments[this.channelName][index];
+        addFreeze(message, username)
       },
       display() {
-        console.log(this.channelName)
         let queryOptions = { active: true, lastFocusedWindow: true };
         chrome.tabs.query(queryOptions, ([tab]) => {
           if (chrome.runtime.lastError)
@@ -207,13 +202,19 @@ export default{
       },
       putDataInComments(data) {
         try {
-          console.log(data)
-          for(let i = 0; i < data.length; i++) {
-            console.log(data[i])
-            if (data[i].fire > (-20))
-              this.allComments[data[i].channel].push(data[i]);
+          if (data === null)
+            return;
+          this.data = data;
+          let key = Object.keys(this.data)
+          let databis = Object.values(data)
+          this.allComments = {"Q&A": [], "Tips": [], "DiscuChat": [], "Feedback": []};
+          for(let i = 0; i < databis.length; i++) {
+            databis[i]["id"] = key[i]
+            this.allComments[databis[i].channel].push(databis[i]);
           }
-          console.log(this.allComments)
+          chrome.browserAction.setBadgeText({
+            text: this.allComments[this.channelName].length.toString()
+          });
         } catch (e) {
           console.log(e)
         }
@@ -221,19 +222,20 @@ export default{
     },
     async created () {
       this.getPath()
-      addUser(this.nameUser, "red")
-      console.log("unique id for hello: " + getUniqueId("hello"));
-      console.log("db is : " + db);
-      const urlID = await getUrlId();
-      const stoRef = ref(db, "website/" + urlID + "/channel/" + this.channelName);
+      const urlID = getUrlId();
+      const stoRef = ref(db, "website/" + urlID + "/messages");
       await onValue(stoRef, (snapshot) => {
           let data = snapshot.val();
           this.putDataInComments(data)
-          console.log(this.users)
       }, (error) => {
           console.log("there has been an error: ", error);
       });
-      console.log("created")
+      const stoRef1 = ref(db, "user")
+      await onValue(stoRef1, (snapshot) => {
+        this.allUsers = Object.values(snapshot.val());
+      }, (error) => {
+        console.log("there has been an error: ", error);
+      });
     },
   }
 </script>
