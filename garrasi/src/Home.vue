@@ -5,6 +5,7 @@
             <h1 class="legend">Start with a name!</h1>
         </div>
             <div class="name_input">
+                <p v-if="isNotUnique" style="color: yellow">Name already used</p>
                 <input class="search-box-home" placeholder="Press enter to come in a new world" type="text" v-model="name" v-on:keyup.enter="pressEnter" maxlength="20">
             </div>
         </div>
@@ -16,6 +17,8 @@
 
 import VueCookies from 'vue-cookies'
 import App from "./App.vue";
+import { getDatabase, set, onValue, get, child, ref} from "firebase/database";
+import { db } from "./main.js"
 
   export default{
     components: {
@@ -25,6 +28,8 @@ import App from "./App.vue";
         return {
             name: VueCookies.get('name'),
             isHome: true,
+            users: [],
+            isNotUnique: false,
         }
     },
     methods: {
@@ -32,17 +37,33 @@ import App from "./App.vue";
         this.isHome = true;
       },
         changeMargin() {
-            return "margin-top: 190px"
+            return "margin-top: 170px"
         },
         pressEnter() {
-            if (this.name.length < 2)
+            if (this.name.length < 2 || this.checkData())
                 return
             VueCookies.set('name', this.name);
             this.isHome = false;
         },
-    },
-    created() {
-        if (this.name !== null)
+        checkData() {
+          console.log(this.users);
+          for (let i = 0; i < this.users.length; i++) {
+            if (this.users[i].name === this.name) {
+              this.isNotUnique = true;
+              return true;
+            }
+          }
+          return false;
+        }
+      },
+    async created() {
+      const stoRef = ref(db, "user/aUniqueUserID")
+      await onValue(stoRef, (snapshot) => {
+        this.users = snapshot.val();
+      }, (error) => {
+        console.log("there has been an error: ", error);
+      });
+      if (this.name !== null)
         this.isHome = false;
     }
   }
@@ -108,7 +129,7 @@ import App from "./App.vue";
     text-align: center;
     padding-top: 50px;
     margin: auto;
-    margin-bottom: 190px;
+    margin-bottom: 170px;
 }
 
 .vertically_centered {

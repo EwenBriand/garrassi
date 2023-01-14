@@ -2,8 +2,10 @@
 {
   "user": {
     "aUniqueUserID": {
-      "name": "admin",
-      "color": "red"
+      "0": {
+        "name": "admin",
+        "color": "red"
+      }
     }
   },
   "website": {

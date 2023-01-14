@@ -1,12 +1,11 @@
 <template>
   <navbar @research="getResearch" @quit="quit()"></navbar>
   <div style="margin-top: 60px; margin-bottom: 70px;">
-    <!-- <p v-if="allComments[channelName].length == 0" style="margin-left: 135px;" >No Message</p> -->
+    <p v-if="allComments[channelName].length == 0" style="margin-left: 135px;" >No Message</p>
     <div v-for="(user,index) in allComments[channelName]" style="margin-top: 20px; margin-bottom: 20px;" :key="user">
       <div class="container user row">
         <div class="col-1" style="margin: auto; margin-right: 20px; margin-left: -10px;">
           <svg xmlns="http://www.w3.org/2000/svg" style="display:inline-block;" :color="setColorToFire(index)" @click="addFire(index, user.id)" width="25" height="25" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16"><path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16Zm0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15Z"/></svg>
-
           <p style="display:inline-block;margin-right:10px;margin-left: 4px;"> {{ user.fire }}</p>
           <svg xmlns="http://www.w3.org/2000/svg" style="display:inline-block" :color="setColorToSnow(index)" @click="addSnow(index, user.id)" width="25" height="25" fill="currentColor" class="bi bi-snow" viewBox="0 0 16 16"><path d="M8 16a.5.5 0 0 1-.5-.5v-1.293l-.646.647a.5.5 0 0 1-.707-.708L7.5 12.793V8.866l-3.4 1.963-.496 1.85a.5.5 0 1 1-.966-.26l.237-.882-1.12.646a.5.5 0 0 1-.5-.866l1.12-.646-.884-.237a.5.5 0 1 1 .26-.966l1.848.495L7 8 3.6 6.037l-1.85.495a.5.5 0 0 1-.258-.966l.883-.237-1.12-.646a.5.5 0 1 1 .5-.866l1.12.646-.237-.883a.5.5 0 1 1 .966-.258l.495 1.849L7.5 7.134V3.207L6.147 1.854a.5.5 0 1 1 .707-.708l.646.647V.5a.5.5 0 1 1 1 0v1.293l.647-.647a.5.5 0 1 1 .707.708L8.5 3.207v3.927l3.4-1.963.496-1.85a.5.5 0 1 1 .966.26l-.236.882 1.12-.646a.5.5 0 0 1 .5.866l-1.12.646.883.237a.5.5 0 1 1-.26.966l-1.848-.495L9 8l3.4 1.963 1.849-.495a.5.5 0 0 1 .259.966l-.883.237 1.12.646a.5.5 0 0 1-.5.866l-1.12-.646.236.883a.5.5 0 1 1-.966.258l-.495-1.849-3.4-1.963v3.927l1.353 1.353a.5.5 0 0 1-.707.708l-.647-.647V15.5a.5.5 0 0 1-.5.5z"/></svg>
         </div>
@@ -30,9 +29,11 @@
   import Navbar from "./views/NavBarView.vue";
   //import { loadChannel, loadChannelOnce, getChannel, deleteme } from "../background.js"
 import { getDatabase, set, onValue, get, child, ref} from "firebase/database";
-import { db } from "./main.js"
+import { db } from "./main.js";
 import { ref as storageRef } from 'firebase/storage';
-import getUuid from "uuid-by-string"
+import getUuid from "uuid-by-string";
+import { getUrlId, addUser } from '../background.js';
+
   function chatUpdate(snapshot) {
     console.log("snapshot.val: " + snapshot.val());
   }
@@ -178,36 +179,15 @@ export default{
           return aIndex - bIndex
         })
       },
-
       sortUsers() {
-        console.log("pipi")
-        console.log("coucou", this.users)
         this.users.sort((a, b) => b.fire - a.fire)
         this.users = this.users.filter(user => user.channel === this.channelName)
       },
       addFire(index, id) {
-        if (!this.like[index].fire && !this.like[index].ice) {
-          this.like[index] = {id: id, fire: true, ice: false}
-          this.users[index].fire++;
-        } else if (!this.like[index].fire) {
-          this.like[index] = {id: id, fire: true, ice: false}
-          this.users[index].fire += 2;
-        } else {
-          this.like[index] = {id: id, fire: false, ice: false}
-          this.users[index].fire--;
-        }
+        let message = this.allComments[this.channelName][index];
       },
       addSnow(index, id) {
-        if (!this.like[index].ice && !this.like[index].fire) {
-          this.like[index] = {id: id, fire: false, ice: true}
-          this.users[index].fire--;
-        } else if (!this.like[index].ice) {
-          this.like[index] = {id: id, fire: false, ice: true}
-          this.users[index].fire += -2;
-        } else {
-          this.like[index] = {id: id, fire: false, ice: false}
-          this.users[index].fire++;
-        }
+        let message = this.allComments[this.channelName][index];
       },
       display() {
         console.log(this.channelName)
@@ -230,7 +210,8 @@ export default{
           console.log(data)
           for(let i = 0; i < data.length; i++) {
             console.log(data[i])
-            this.allComments[data[i].channel].push(data[i]);
+            if (data[i].fire > (-20))
+              this.allComments[data[i].channel].push(data[i]);
           }
           console.log(this.allComments)
         } catch (e) {
@@ -239,16 +220,13 @@ export default{
       }
     },
     async created () {
-      // console.log("chat chat chat: " + loadChannel("qna", chatUpdate));
-      //loadChannelOnce("qna", "bonjour");
-      //deleteme();
       this.getPath()
+      addUser(this.nameUser, "red")
       console.log("unique id for hello: " + getUniqueId("hello"));
       console.log("db is : " + db);
-      const stoRef = ref(db, "website/bonjour/channel/qna")
+      const urlID = await getUrlId();
+      const stoRef = ref(db, "website/" + urlID + "/channel/" + this.channelName);
       await onValue(stoRef, (snapshot) => {
-          // const data = snapshot.val();
-          debugger
           let data = snapshot.val();
           this.putDataInComments(data)
           console.log(this.users)
@@ -300,4 +278,4 @@ p {
   background-color: #545454;;
   width: 100%;
 }
-</style>
+</style> -->
