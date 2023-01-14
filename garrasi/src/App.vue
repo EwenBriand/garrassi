@@ -125,7 +125,7 @@ export default{
         this.$emit("quit", true)
       },
       getResearch(value) {
-        this.users = this.usersStock.filter(user => (user.comment.toLowerCase()).includes(value.toLowerCase()))
+        this.allComments[this.channelName] = this.usersStock.filter(user => (user.message.toLowerCase()).includes(value.toLowerCase()))
       },
       setColorToFire(index) {
         // if (this.like[index].fire)
@@ -148,17 +148,6 @@ export default{
 
       sendComment() {
         if (this.newComment.length > 0) {
-          // var id = this.users.length;
-          // this.users.push({
-          //   name: this.nameUser,
-          //   date: new Date(),
-          //   comment: this.newComment,
-          //   fire: 0,
-          //   color: this.changeColor(this.nameUser),
-          //   channel: this.channelName
-          // });
-          // this.sortAll();
-          // this.usersStock = this.users;
           let info = {
             channel : this.channelName,
             name : this.nameUser,
@@ -168,12 +157,9 @@ export default{
           this.newComment = '';
         }
       },
-      sortAll() {
-        this.sortUsers();
-      },
       sortUsers() {
-        this.users.sort((a, b) => b.fire - a.fire)
-        this.users = this.users.filter(user => user.channel === this.channelName)
+        if (this.channelName !== "DiscuChat")
+          this.allComments[this.channelName].sort((a, b) => ((b.fire.length - 1) - (b.freeze.length - 1)) - ((a.fire.length - 1) - (a.freeze.length - 1)))
       },
       Fire(index, username) {
         console.log(username)
@@ -184,16 +170,6 @@ export default{
         console.log(username)
         let message = this.allComments[this.channelName][index];
         addFreeze(message, username)
-      },
-      display() {
-        let queryOptions = { active: true, lastFocusedWindow: true };
-        chrome.tabs.query(queryOptions, ([tab]) => {
-          if (chrome.runtime.lastError)
-          console.error(chrome.runtime.lastError);
-          this.url = tab
-        });
-        if (this.url === '')
-          this.display()
       },
       getPath() {
         this.channelName = window.location.href.split('?')[1];
@@ -212,6 +188,8 @@ export default{
             databis[i]["id"] = key[i]
             this.allComments[databis[i].channel].push(databis[i]);
           }
+          this.usersStock = this.allComments[this.channelName];
+          this.sortUsers();
           chrome.browserAction.setBadgeText({
             text: this.allComments[this.channelName].length.toString()
           });
@@ -280,4 +258,4 @@ p {
   background-color: #545454;;
   width: 100%;
 }
-</style> -->
+</style>
